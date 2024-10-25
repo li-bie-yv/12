@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学号-姓名-个人记账应用</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <link rel="stylesheet" href="accounting.css">
+</head>
+<body>
+    <div class="container" id="app">
+        <div>
+            <input type="number" v-model.number="amount" placeholder="输入金额">
+            <input type="text" v-model="note" placeholder="备注(可选)">
+            <select v-model="type">
+                <option value="收入">收入</option>
+                <option value="支出">支出</option>
+            </select>
+            <button @click="addEntry">添加账目</button>
+        </div>
+        <ul>
+            <li v-for="(entry, index) in entries" :key="index">
+                金额: {{ entry.amount }}, 备注: {{ entry.note }}, 类型: {{ entry.type }}, 日期: {{ entry.date }}
+            </li>
+        </ul>
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                amount: 0, 
+                note: '',  
+                type: '',   
+                entries: [] 
+            },
+            methods: {
+                addEntry() {
+                    if (this.amount <= 0) {
+                        alert('金额必须大于0！');
+                        return;
+                    }
+                    const entry = {
+                        amount: parseFloat(this.amount), 
+                        note: this.note,
+                        type: this.type,
+                        date: new Date().toLocaleString() 
+                    };
+                    this.entries.push(entry);
+                    this.amount = 0;
+                    this.note = '';
+                    this.type = '';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
